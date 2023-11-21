@@ -1,0 +1,126 @@
+﻿@using SearchProduct.Models.ViewModels;
+@model ProductViewModel
+<br />
+<div class="container p-4 border">
+    <div class="row pb-2">
+        <h1 class="text-primary">Product List</h1>
+    </div>
+    <hr />
+    <form asp-action="Index">
+        <div class="row pb-2">
+            <span>
+                @if (ViewBag.Error != null)
+                {
+                    <label class="form-control text-danger">@ViewBag.Error</label>
+                }
+
+            </span>
+            <h3>Search Products By</h3>
+            <div class="row pb-1">
+                <div class="col-2">
+                    <label> Name </label>
+                </div>
+                <div class="col-5"><input class="form-control" id="ipname" asp-for=ProductName type="text" /></div>
+            </div>
+            <div class="row pb-1">
+                <div class="col-2">
+                    <label> Size </label>
+                </div>
+                <div class="col-5">
+                    @* @Html.DropDownList("Sizes", Html.GetEnumSelectList<ProductSize>(),"Select Size",
+                    new {@class="form-control"}) *@
+                    <select asp-for="Size" id="siSize" class="form-control" asp-items="new SelectList(ViewBag.ProductSizes)"></select>
+                </div>
+            </div>
+            <div class="row pb-1">
+                <div class="col-2">
+                    <label> Price </label>
+                </div>
+                <div class="col-5"><input class="form-control" asp-for=Price id="ipPrice" type="number" /></div>
+            </div>
+            <div class="row pb-1">
+                <div class="col-2">
+                    <label> Mfg Date </label>
+                </div>
+                <div class="col-5"><input class="form-control" asp-for=MfgDate id="ipDate" type="date" /></div>
+            </div>
+            <div class="row pb-1">
+                <div class="col-2">
+                    <label> Category</label>
+                </div>
+                <div class="col-5">
+                    @* @Html.DropDownList("Catetories", Html.GetEnumSelectList<ProductCategory>(),"Select Category",
+                    new {@class="form-control"}) *@
+                    <select asp-for="Category" id="slcategory" class="form-control" asp-items="new SelectList(ViewBag.ProductCatetories)"></select>
+                </div>
+            </div>
+            <div class="row pb-1">
+                <div class="col-2">
+                    <label> Search Criteria</label>
+                </div>
+                <div class="col-5">
+                    @* @Html.DropDownList("Searches", Html.GetEnumSelectList<SearchCriteria>(),"Select Search Criteria",
+                    new {@class="form-control"}) *@
+                    <select asp-for="SearchCriteria" id="slcriteria" class="form-control" asp-items="new SelectList(ViewBag.SearchCriteria)"></select>
+                </div>
+            </div>
+
+            <div class="row pb-1">
+                <div class="col-4">
+                    <input class="btn btn-primary align-content-center" type="submit" value="Search" />
+                    <a href="#" class="btn btn-danger" onclick="ResetValues()">Reset</a>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+    <hr />
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Mfg Date</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Products !=null)
+            {
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>@item.ProductId</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Size</td>
+                        <td>@item.Price</td>
+                        <td>@item.MfgDate.ToShortDateString()</td>
+                        <td>@item.Category</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    function CheckName(cbVal,ipVal) {
+        const inputValue = document.getElementById(ipVal)
+        if (document.getElementById(cbVal).checked)
+            inputValue.style.display = "inline-block"
+        else
+            inputValue.style.display = "none"
+    }
+
+    function ResetValues() {
+        document.getElementById("ipname").value = null
+        document.getElementById("siSize").selectedIndex = 0
+        document.getElementById("ipPrice").value = null
+        document.getElementById("ipDate").value = null
+        document.getElementById("slcategory").selectedIndex = 0
+        document.getElementById("slcriteria").selectedIndex = 0
+    }
+</script>

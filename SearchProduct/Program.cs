@@ -1,4 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using SearchProduct.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ProductDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ProductDBConn"));
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
